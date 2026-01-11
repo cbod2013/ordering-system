@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Waiter Ordering System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            margin: auto;
+            border-radius: 8px;
+        }
+        select, input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+        }
+        table {
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        .total {
+            font-weight: bold;
+            text-align: right;
+            margin-top: 10px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .reset {
+            background: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Waiter Ordering System</h1>
+
+<div class="container">
+<select id="tableNumber">
+    <option>Table 1</option>
+    <option>Table 2</option>
+    <option>Table 3</option>
+    <option>Table 4</option>
+    <option>Table 5</option>
+    <option>Table 6</option>
+    <option>Table 7</option>
+    <option>Table 8</option>
+    <option>Table 9</option>
+    <option>Table 10</option>
+    <option>Table 11</option>
+    <option>Table 12</option>
+</select>
+
+
+  <select id="item">
+    <!-- Starters -->
+    <option value="5">Garlic Bread - $5</option>
+    <option value="6">Bruschetta - $6</option>
+    <option value="7">Stuffed Mushrooms - $7</option>
+    <option value="4">French Fries - $4</option>
+    <option value="5">Onion Rings - $5</option>
+
+    <!-- Main Food -->
+    <option value="12">Margherita Pizza - $12</option>
+    <option value="15">Pepperoni Pizza - $15</option>
+    <option value="14">Cheeseburger - $14</option>
+    <option value="13">Grilled Chicken - $13</option>
+    <option value="16">Spaghetti Bolognese - $16</option>
+
+    <!-- Drinks -->
+    <option value="3">Coke - $3</option>
+    <option value="3">Sprite - $3</option>
+    <option value="4">Orange Juice - $4</option>
+    <option value="5">Milkshake - $5</option>
+    <option value="6">Coffee - $6</option>
+<option value="5">Chocolate Cake - $5</option>
+<option value="4">Cheesecake - $4</option>
+<option value="3">Ice Cream Sundae - $3</option>
+<option value="4">Brownie - $4</option>
+<option value="3">Fruit Salad - $3</option>
+<option value="5">Tiramisu - $5</option>
+</select>
+
+
+    <label>Quantity</label>
+    <input type="number" id="quantity" value="1" min="1">
+
+    <button onclick="addItem()">Add Item</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="orderList"></tbody>
+    </table>
+
+    <div class="total" id="total">Total: $0</div>
+
+    <button onclick="submitOrder()">Submit Order</button>
+    <button class="reset" onclick="resetOrder()">Reset</button>
+</div>
+
+<script>
+    let total = 0;
+
+    function addItem() {
+        const itemSelect = document.getElementById("item");
+        const itemName = itemSelect.options[itemSelect.selectedIndex].text;
+        const price = Number(itemSelect.value);
+        const quantity = Number(document.getElementById("quantity").value);
+
+        const orderList = document.getElementById("orderList");
+        const row = orderList.insertRow();
+
+        row.insertCell(0).innerText = itemName;
+        row.insertCell(1).innerText = quantity;
+        row.insertCell(2).innerText = "$" + (price * quantity);
+
+        total += price * quantity;
+        document.getElementById("total").innerText = "Total: $" + total;
+    }
+
+    function submitOrder() {
+        const table = document.getElementById("tableNumber").value;
+        alert("Order submitted for " + table + "\nTotal: $" + total);
+        resetOrder();
+    }
+
+    function resetOrder() {
+        document.getElementById("orderList").innerHTML = "";
+        total = 0;
+        document.getElementById("total").innerText = "Total: $0";
+    }
+</script>
+
+</body>
+</html>
