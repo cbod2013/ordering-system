@@ -163,3 +163,34 @@
 
 </body>
 </html>
+def save_receipt(order, filename):
+    total = 0
+
+    with open(filename, "w") as file:
+        file.write("======= RECEIPT =======\n")
+
+        for item in order:
+            name = item["name"]
+            price = item["price"]
+            qty = item["quantity"]
+
+            item_total = price * qty
+            total += item_total
+
+            file.write(f"{name} x{qty} = ${item_total:.2f}\n")
+
+        file.write("-----------------------\n")
+        file.write(f"TOTAL: ${total:.2f}\n")
+        file.write("=======================\n")
+
+    print(f"Receipt saved as '{filename}'")
+
+
+def open_receipt(filename):
+    try:
+        with open(filename, "r") as file:
+            print("\n--- RECEIPT ---")
+            print(file.read())
+    except FileNotFoundError:
+        print("Receipt not found.")
+
