@@ -154,77 +154,26 @@
         resetOrder();
     }
 
-    function resetOrder() {
-        document.getElementById("orderList").innerHTML = "";
-        total = 0;
-        document.getElementById("total").innerText = "Total: $0";
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Receipt System</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        button {
-            margin: 5px 0;
-            padding: 10px;
-        }
-        pre {
-            background: #f4f4f4;
-            padding: 10px;
-        }
-    </style>
-</head>
-<body>
+  def save_receipt(order, filename):
+    total = 0
+    with open(filename, "w") as file:
+        file.write("======= RECEIPT =======\n")
+        for item in order:
+            name = item["name"]
+            price = item["price"]
+            qty = item["quantity"]
+            line_total = price * qty
+            total += line_total
+            file.write(f"{name} x{qty} = ${line_total:.2f}\n")
+        file.write("-----------------------\n")
+        file.write(f"TOTAL: ${total:.2f}\n")
+        file.write("=======================\n")
+    print(f"Receipt saved as '{filename}'")
 
-<h2>Receipt System</h2>
-
-<button onclick="saveReceipt()">Save Receipt</button>
-<button onclick="openReceipt()">Open Receipt</button>
-
-<pre id="output"></pre>
-
-<script>
-    // YOUR ORDER (this already exists in your system)
-    const order = [
-        { name: "Burger", price: 5.50, quantity: 2 },
-        { name: "Pizza", price: 8.00, quantity: 1 }
-    ];
-
-    function generateReceiptText() {
-        let total = 0;
-        let receipt = "======= RECEIPT =======\n";
-
-        order.forEach(item => {
-            const itemTotal = item.price * item.quantity;
-            total += itemTotal;
-            receipt += `${item.name} x${item.quantity} = $${itemTotal.toFixed(2)}\n`;
-        });
-
-        receipt += "-----------------------\n";
-        receipt += `TOTAL: $${total.toFixed(2)}\n`;
-        receipt += "=======================\n";
-
-        return receipt;
-    }
-
-    function saveReceipt() {
-        const text = generateReceiptText();
-        const blob = new Blob([text], { type: "text/plain" });
-        const link = document.createElement("a");
-
-        link.href = URL.createObjectURL(blob);
-        link.download = "receipt.txt";
-        link.click();
-    }
-
-    function openReceipt() {
-        document.getElementById("output").textContent = generateReceiptText();
-    }
-</script>
-
-</body>
-</html>
+def open_receipt(filename):
+    try:
+        with open(filename, "r") as file:
+            print("\n--- RECEIPT ---")
+            print(file.read())
+    except FileNotFoundError:
+        print("Receipt not found.")
